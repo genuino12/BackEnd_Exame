@@ -1,5 +1,5 @@
 import express from 'express';
-import clienteController from '../controller/clienteCtrl.js';
+import clienteController from '../controller/clienteCtrl.js';  
 const router = express.Router();
 
 router.post('/', clienteController.inserir);

@@ -73,21 +73,24 @@ static async buscarcliente(cliente){
     try {
         const dao = new clienteDao();
         const rows = await dao.buscarcliente(cliente);
+
         if (!Array.isArray(rows)){
-            throw new error ("O metodo buscarcliente não retornou um array."); 
+            throw new Error("O método buscarcliente não retornou um array."); 
         }
-        return rows,Map((row) => new clienteModel(
+
+        return rows.map((row) => new clienteModel(
             row.id,
             row.nome,
-            row,telefone,
+            row.telefone,
             row.endereco,
             row.cpf
         ));
     } catch (error) {
         console.error("erro ao buscar Cliente:", error);
-        throw new error ("Não foi possivel buscar os CLientes.");
+        throw new Error("Não foi possível buscar os clientes.");
     }
 }
+
 async deletar(){
     const dao = new clienteDao();
     return await dao.deletar(this.#id);

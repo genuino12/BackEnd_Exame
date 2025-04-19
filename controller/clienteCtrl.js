@@ -70,21 +70,21 @@ class clienteController {
     async buscarcliente(req, res) {
         try {
             const { cliente } = req.query;
-            const clientes = await clienteModel.buscarcliente(clientes);
-            if (clientes.length === 0){
+            const resultado = await clienteModel.buscarcliente(cliente);
+            if (resultado.length === 0){
                 return res.status(404).json({
                     message: 'cliente não encontrado',
                 });
             }
             res.status(200).json ({
                 message: 'cliente encontrado com sucesso',
-                data: clientes.map(c => c.toJSON(),)
+                data: resultado.map(c => c.toJSON(),)
             });
         } catch (error) {
            console.error('erro ao busca cliente', error);
            res.status(500).json({
             message: 'erro ao busca cliente por flitro',
-            ero: error.message
+            erro: error.message
            });
         }
     }
@@ -117,7 +117,7 @@ class clienteController {
             }
         } catch (error) {
             console.error('erro ao atualizar cliente:', error);
-            return res.status(500),json({
+             res.status(500),json({
                 message: 'erro ao atualizar cliente',
                 erro: error.message
             });
@@ -125,4 +125,4 @@ class clienteController {
     }
 }
 
-export default clienteController; 
+export default new clienteController(); 
