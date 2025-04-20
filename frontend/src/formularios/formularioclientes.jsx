@@ -1,123 +1,140 @@
 import React, { useState } from 'react';
+import { Button, Form, Alert, Nav, Container, Navbar, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function FormularioCliente({ onSubmit }) {
-  const [cliente, setCliente] = useState({
-    nome: '',
-    telefone: '',
-    endereco: '',
-    cpf: '',
+const CadastrarCliente = ({ adicionarCliente }) => {
+  const [formData, setFormData] = useState({
+    Nome: '',
+    Telefone: '',
+    Endereco: '',
+    CPF: '', 
   });
 
   const [erros, setErros] = useState({});
+  const [sucesso, setSucesso] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCliente({ ...cliente, [name]: value });
-  };
-
-  const validar = () => {
+  // Validação do formulário
+  const validarFormulario = () => {
     const novosErros = {};
 
-    if (!cliente.nome.trim()) {
-      novosErros.nome = 'Nome é obrigatório.';
+    if (!formData.Nome) novosErros.Nome = 'O nome é obrigatório.';
+    if (!formData.Telefone || formData.Telefone.length < 10) {
+      novosErros.Telefone = 'Digite um telefone válido.';
     }
-
-    const telefoneRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
-    if (!telefoneRegex.test(cliente.telefone)) {
-      novosErros.telefone = 'Telefone inválido. Use o formato (11) 91234-5678.';
-    }
-
-    if (!cliente.endereco.trim()) {
-      novosErros.endereco = 'Endereço é obrigatório.';
-    }
-
-    const cpfLimpo = cliente.cpf.replace(/\D/g, '');
-    if (!/^\d{11}$/.test(cpfLimpo)) {
-      novosErros.cpf = 'CPF deve conter 11 dígitos numéricos.';
+    if (!formData.Endereco) novosErros.Endereco = 'O endereço é obrigatório.';
+    
+    // Validação do CPF (simples)
+    if (!formData.CPF || formData.CPF.length !== 11) {
+      novosErros.CPF = 'O CPF deve ter 11 dígitos.';
     }
 
     setErros(novosErros);
     return Object.keys(novosErros).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const Envio = async (e) => {
     e.preventDefault();
-    if (validar()) {
-      if (onSubmit) onSubmit(cliente);
 
-      console.log('Cliente registrado:', cliente);
-
-      setCliente({
-        nome: '',
-        telefone: '',
-        endereco: '',
-        cpf: '',
-      });
-      setErros({});
+    if (validarFormulario()) {
+      try {
+        const novoCliente = {
+          nome: formData.Nome,
+          telefone: formData.Telefone,
+          endereco: formData.Endereco,
+          cpf: formData.CPF, 
+        };
+        await adicionarCliente(novoCliente);
+        setFormData({
+          Nome: '',
+          Telefone: '',
+          Endereco: '',
+          CPF: '', 
+        });
+        setErros({});
+        setSucesso(true);
+        setTimeout(() => setSucesso(false), 3000);
+      } catch (error) {
+        console.error('Erro ao cadastrar cliente:', error);
+      }
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="container mt-4">
-      <h2 className="mb-4">Registrar Cliente</h2>
+    <div className="container mt-4">
+      <h2>Cadastrar Cliente</h2>
+      <Navbar bg="" variant="" className="justify-content-center">
+        <Container>
+          <Col className="d-flex justify-content-center">
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/clientes">
+                <Button variant="dark">Lista de Clientes</Button>
+              </Nav.Link>
+            </Nav>
+          </Col>
+        </Container>
+      </Navbar>
 
-      <div className="mb-3">
-        <label className="form-label">Nome:</label>
-        <input
-          type="text"
-          className={`form-control ${erros.nome ? 'is-invalid' : ''}`}
-          name="nome"
-          value={cliente.nome}
-          onChange={handleChange}
-          placeholder="Ex: João da Silva"
-        />
-        {erros.nome && <div className="invalid-feedback">{erros.nome}</div>}
-      </div>
+      {sucesso && <Alert variant="success">Cliente cadastrado com sucesso!</Alert>}
+      {Object.keys(erros).length > 0 && (
+        <Alert variant="danger">Corrija os erros antes de enviar o formulário.</Alert>
+      )}
 
-      <div className="mb-3">
-        <label className="form-label">Telefone:</label>
-        <input
-          type="tel"
-          className={`form-control ${erros.telefone ? 'is-invalid' : ''}`}
-          name="telefone"
-          value={cliente.telefone}
-          onChange={handleChange}
-          placeholder="Ex: (11) 91234-5678"
-        />
-        {erros.telefone && <div className="invalid-feedback">{erros.telefone}</div>}
-      </div>
+      <Form onSubmit={Envio}>
+        <Form.Group controlId="formNome">
+          <Form.Label>Nome:</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Digite o nome do cliente"
+            value={formData.Nome}
+            onChange={(e) => setFormData({ ...formData, Nome: e.target.value })}
+            required
+          />
+        </Form.Group>
 
-      <div className="mb-3">
-        <label className="form-label">Endereço:</label>
-        <input
-          type="text"
-          className={`form-control ${erros.endereco ? 'is-invalid' : ''}`}
-          name="endereco"
-          value={cliente.endereco}
-          onChange={handleChange}
-          placeholder="Ex: Rua das Pizzas, 123"
-        />
-        {erros.endereco && <div className="invalid-feedback">{erros.endereco}</div>}
-      </div>
+        <Form.Group controlId="formTelefone">
+          <Form.Label>Telefone:</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Digite o telefone do cliente"
+            value={formData.Telefone}
+            onChange={(e) => setFormData({ ...formData, Telefone: e.target.value })}
+            required
+          />
+        </Form.Group>
 
-      <div className="mb-3">
-        <label className="form-label">CPF:</label>
-        <input
-          type="text"
-          className={`form-control ${erros.cpf ? 'is-invalid' : ''}`}
-          name="cpf"
-          value={cliente.cpf}
-          onChange={handleChange}
-          placeholder="Ex: 123.456.789-00"
-        />
-        {erros.cpf && <div className="invalid-feedback">{erros.cpf}</div>}
-      </div>
+        <Form.Group controlId="formEndereco">
+          <Form.Label>Endereço:</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Digite o endereço do cliente"
+            value={formData.Endereco}
+            onChange={(e) => setFormData({ ...formData, Endereco: e.target.value })}
+            required
+          />
+        </Form.Group>
 
-      <button type="submit" className="btn btn-warning text-white">
-        Registrar
-      </button>
-    </form>
+        <Form.Group controlId="formCPF">
+          <Form.Label>CPF:</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Digite o CPF do cliente"
+            value={formData.CPF}
+            onChange={(e) => setFormData({ ...formData, CPF: e.target.value })}
+            required
+          />
+        </Form.Group>
+
+        <br />
+        <Button variant="primary" type="submit">
+          Cadastrar
+        </Button>
+        <Button variant="danger" type="reset">
+          Cancelar
+        </Button>
+      </Form>
+    </div>
   );
-}
+};
 
-export default FormularioCliente;
+export default CadastrarCliente;

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import FormularioCliente from './formularios/formularioclientes';
 import FormularioProduto from './formularios/formularioprodutos';
 import FormularioPedido from './formularios/formulariopedido'; 
+import ClienteServico from './serviços/clientes';
 import './App.css';
 
 function App() {

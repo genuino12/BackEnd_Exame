@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 function FormularioProduto({ onSubmit }) {
   const [produto, setProduto] = useState({
+    id: '', // Campo id adicionado
     nome: '',
     preco: '',
   });
@@ -20,7 +21,7 @@ function FormularioProduto({ onSubmit }) {
       novosErros.nome = 'Nome do produto é obrigatório.';
     }
 
-    const precoRegex = /^[0-9]+(\.[0-9]{1,2})?$/; 
+    const precoRegex = /^[0-9]+(\.[0-9]{1,2})?$/;
     if (!precoRegex.test(produto.preco)) {
       novosErros.preco = 'Preço inválido. Use o formato 10.99.';
     }
@@ -37,6 +38,7 @@ function FormularioProduto({ onSubmit }) {
       console.log('Produto registrado:', produto);
 
       setProduto({
+        id: '', // Limpar o id após o envio
         nome: '',
         preco: '',
       });
@@ -47,6 +49,18 @@ function FormularioProduto({ onSubmit }) {
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
       <h2 className="mb-4">Cadastrar Produto</h2>
+
+      <div className="mb-3">
+        <label className="form-label">ID do Produto (automático):</label>
+        <input
+          type="text"
+          className="form-control"
+          name="id"
+          value={produto.id}
+          disabled
+          placeholder="ID será gerado automaticamente"
+        />
+      </div>
 
       <div className="mb-3">
         <label className="form-label">Nome do Produto:</label>
