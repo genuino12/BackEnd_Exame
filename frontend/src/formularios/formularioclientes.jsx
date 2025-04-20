@@ -60,6 +60,17 @@ const CadastrarCliente = ({ adicionarCliente }) => {
     }
   };
 
+  // Função para limpar o formulário
+  const handleReset = () => {
+    setFormData({
+      Nome: '',
+      Telefone: '',
+      Endereco: '',
+      CPF: '',
+    });
+    setErros({});
+  };
+
   return (
     <div className="container mt-4">
       <h2>Cadastrar Cliente</h2>
@@ -129,7 +140,7 @@ const CadastrarCliente = ({ adicionarCliente }) => {
         <Button variant="primary" type="submit">
           Cadastrar
         </Button>
-        <Button variant="danger" type="reset">
+        <Button variant="danger" type="button" onClick={handleReset} className="ms-2">
           Cancelar
         </Button>
       </Form>

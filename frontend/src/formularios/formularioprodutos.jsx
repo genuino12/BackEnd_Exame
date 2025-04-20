@@ -46,6 +46,15 @@ function FormularioProduto({ onSubmit }) {
     }
   };
 
+  const handleReset = () => {
+    setProduto({
+      id: '',
+      nome: '',
+      preco: '',
+    });
+    setErros({});
+  };
+
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
       <h2 className="mb-4">Cadastrar Produto</h2>
@@ -88,9 +97,14 @@ function FormularioProduto({ onSubmit }) {
         {erros.preco && <div className="invalid-feedback">{erros.preco}</div>}
       </div>
 
-      <button type="submit" className="btn btn-warning text-white">
-        Cadastrar Produto
-      </button>
+      <div className="mb-3">
+        <button type="submit" className="btn btn-primary text-white me-2">
+          Cadastrar Produto
+        </button>
+        <button type="button" onClick={handleReset} className="btn btn-danger">
+          Cancelar
+        </button>
+      </div>
     </form>
   );
 }

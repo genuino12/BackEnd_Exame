@@ -39,6 +39,10 @@ function FormularioPedido({ onSubmit }) {
     });
   };
 
+  const handleVisualizarPedido = () => {
+    console.log('Visualizando pedido:', pedido);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
       <h2 className="mb-4">Novo Pedido</h2>
@@ -77,19 +81,27 @@ function FormularioPedido({ onSubmit }) {
       </div>
 
       <div className="mb-3">
-  <label className="form-label">Data do Pedido:</label>
-  <input
-    type="text"
-    className="form-control"
-    value="Será registrada automaticamente"
-    disabled
-  />
-</div>
+        <label className="form-label">Data do Pedido:</label>
+        <input
+          type="text"
+          className="form-control"
+          value="Será registrada automaticamente"
+          disabled
+        />
+      </div>
 
-
-      <button type="submit" className="btn btn-primary">
-        Fazer Pedido
-      </button>
+      <div className="mb-3">
+        <button type="submit" className="btn btn-primary me-2">
+          Fazer Pedido
+        </button>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleVisualizarPedido}
+        >
+          Visualizar Pedido
+        </button>
+      </div>
     </form>
   );
 }
