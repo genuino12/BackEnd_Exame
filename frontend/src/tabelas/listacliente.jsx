@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import ClienteServico from "../serviços/clienteServico.js"; 
+import ClienteServico from "../serviços/clientes"; 
 
 function ListaClientes() {
     const [clientes, setClientes] = useState([]);
@@ -80,8 +80,9 @@ function ListaClientes() {
                     <tr>
                         <th>ID</th>
                         <th>Nome</th>
-                        <th>Email</th>
                         <th>Telefone</th>
+                        <th>Endereço</th>
+                        <th>CPF</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -91,8 +92,9 @@ function ListaClientes() {
                             <tr key={cliente.id}>
                                 <td>{cliente.id}</td>
                                 <td>{cliente.nome}</td>
-                                <td>{cliente.email}</td>
                                 <td>{cliente.telefone}</td>
+                                <td>{cliente.endereco}</td>
+                                <td>{cliente.cpf}</td>
                                 <td>
                                     <Button variant="primary" className="me-1" onClick={() => handleEditar(cliente.id)}>
                                         Editar
@@ -105,7 +107,7 @@ function ListaClientes() {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="5" className="text-center">
+                            <td colSpan="6" className="text-center">
                                 Não há clientes cadastrados ou nenhum resultado para sua pesquisa.
                             </td>
                         </tr>

@@ -1,7 +1,7 @@
 const API = "http://localhost:4000";
 
 class PedidoServico {
-  // Buscar pedidos com base em um filtro (ex: nome do cliente, status etc.)
+ 
   async buscarPedidos(filtro) {
     try {
       if (!filtro) filtro = "";

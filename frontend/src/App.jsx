@@ -1,24 +1,29 @@
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+
 import FormularioCliente from './formularios/formularioclientes';
 import FormularioProduto from './formularios/formularioprodutos';
 import FormularioPedido from './formularios/formulariopedido';
 import ClienteServico from './serviços/clientes';
 import ProdutoServico from './serviços/produtos';
-import PedidoServico from './serviços/pedidos'; // 
+import PedidoServico from './serviços/pedidos';
+import ListaClientes from './tabelas/listacliente';
+import ListaPedidos from './tabelas/listapedido'; 
 import './App.css';
 
 const clienteServico = new ClienteServico();
-const produtoServico = new ProdutoServico();     
-const pedidoServico = new PedidoServico();       
+const produtoServico = new ProdutoServico();
+const pedidoServico = new PedidoServico();
 
 function App() {
   const [clientes, setClientes] = useState([]);
   const [produtos, setProdutos] = useState([]);
-  const [pedidos, setPedidos] = useState([]);     
+  const [pedidos, setPedidos] = useState([]);
 
+  // Carregar dados iniciais
   useEffect(() => {
     const carregarClientes = async () => {
       try {
@@ -49,7 +54,7 @@ function App() {
 
     carregarClientes();
     carregarProdutos();
-    carregarPedidos();  // ✅ NOVO
+    carregarPedidos();
   }, []);
 
   return (
@@ -71,6 +76,12 @@ function App() {
               <Nav.Link as={Link} to="/Formulario-Cliente" className="text-white">
                 Registrar Cliente
               </Nav.Link>
+              <Nav.Link as={Link} to="/Lista-Clientes" className="text-white">
+                Lista de Clientes
+              </Nav.Link>
+              <Nav.Link as={Link} to="/visualizar-pedidos" className="text-white">
+                Visualizar Pedidos
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -88,7 +99,15 @@ function App() {
           />
           <Route
             path="/realizar-pedido"
-            element={<FormularioPedido clientes={clientes} produtos={produtos} pedidos={pedidos} />} 
+            element={<FormularioPedido clientes={clientes} produtos={produtos} pedidos={pedidos} />}
+          />
+          <Route
+            path="/Lista-Clientes"
+            element={<ListaClientes clientes={clientes} />}
+          />
+          <Route
+            path="/visualizar-pedidos"
+            element={<ListaPedidos />} // Rota atualizada para visualizar pedidos
           />
           <Route path="*" element={<div>Página não encontrada!</div>} />
         </Routes>

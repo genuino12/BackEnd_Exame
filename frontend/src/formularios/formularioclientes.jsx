@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Alert, Nav, Container, Navbar, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Button, Form, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CadastrarCliente = ({ adicionarCliente }) => {
@@ -74,17 +73,6 @@ const CadastrarCliente = ({ adicionarCliente }) => {
   return (
     <div className="container mt-4">
       <h2>Cadastrar Cliente</h2>
-      <Navbar bg="" variant="" className="justify-content-center">
-        <Container>
-          <Col className="d-flex justify-content-center">
-            <Nav className="me-auto">
-              <Nav.Link as={Link} to="/lista-clientes">
-                <Button variant="dark">Lista de Clientes</Button>
-              </Nav.Link>
-            </Nav>
-          </Col>
-        </Container>
-      </Navbar>
 
       {sucesso && <Alert variant="success">Cliente cadastrado com sucesso!</Alert>}
       {Object.keys(erros).length > 0 && (
