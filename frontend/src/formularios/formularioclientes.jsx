@@ -62,7 +62,7 @@ function FormularioCliente({ onSubmit }) {
       <h2 className="mb-4">Registrar Cliente</h2>
 
       <div className="mb-3">
-        <label className="form-label">Nome</label>
+        <label className="form-label">Nome:</label>
         <input
           type="text"
           className={`form-control ${erros.nome ? 'is-invalid' : ''}`}
@@ -75,7 +75,7 @@ function FormularioCliente({ onSubmit }) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Telefone</label>
+        <label className="form-label">Telefone:</label>
         <input
           type="tel"
           className={`form-control ${erros.telefone ? 'is-invalid' : ''}`}
@@ -88,7 +88,7 @@ function FormularioCliente({ onSubmit }) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Endereço</label>
+        <label className="form-label">Endereço:</label>
         <input
           type="text"
           className={`form-control ${erros.endereco ? 'is-invalid' : ''}`}
@@ -101,7 +101,7 @@ function FormularioCliente({ onSubmit }) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">CPF</label>
+        <label className="form-label">CPF:</label>
         <input
           type="text"
           className={`form-control ${erros.cpf ? 'is-invalid' : ''}`}
