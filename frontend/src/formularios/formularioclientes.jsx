@@ -78,7 +78,7 @@ const CadastrarCliente = ({ adicionarCliente }) => {
         <Container>
           <Col className="d-flex justify-content-center">
             <Nav className="me-auto">
-              <Nav.Link as={Link} to="/clientes">
+              <Nav.Link as={Link} to="/lista-clientes">
                 <Button variant="dark">Lista de Clientes</Button>
               </Nav.Link>
             </Nav>
