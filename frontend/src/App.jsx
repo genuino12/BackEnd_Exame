@@ -2,7 +2,8 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import FormularioCliente from './formularios/formularioclientes';
-import FormularioProduto from './formularios/formularioprodutos'; 
+import FormularioProduto from './formularios/formularioprodutos';
+import FormularioPedido from './formularios/formulariopedido'; 
 import './App.css';
 
 function App() {
@@ -17,15 +18,11 @@ function App() {
             <Link to="/realizar-pedido" className="btn btn-primary btn-lg">
               Fazer Pedido
             </Link>
-            <Link to="/produtos" className="btn btn-success btn-lg">
-              Gerenciar Produtos
+            <Link to="/Formulario-Produto" className="btn btn-success btn-lg">
+              Registrar Produtos
             </Link>
             <Link to="/Formulario-Cliente" className="btn btn-warning btn-lg text-white">
               Registrar Cliente
-            </Link>
-            {/* Adicionando link para o formulário de produtos */}
-            <Link to="/Formulario-Produto" className="btn btn-info btn-lg text-white">
-              Cadastrar Produto
             </Link>
           </div>
         </header>
@@ -39,6 +36,7 @@ function App() {
       <Routes>
         <Route path="/Formulario-Cliente" element={<FormularioCliente />} />
         <Route path="/Formulario-Produto" element={<FormularioProduto />} />
+        <Route path="/realizar-pedido" element={<FormularioPedido />} /> 
       </Routes>
     </Router>
   );
