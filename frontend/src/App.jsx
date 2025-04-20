@@ -1,44 +1,102 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Container, Navbar, Nav } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 import FormularioCliente from './formularios/formularioclientes';
 import FormularioProduto from './formularios/formularioprodutos';
-import FormularioPedido from './formularios/formulariopedido'; 
+import FormularioPedido from './formularios/formulariopedido';
 import ClienteServico from './serviços/clientes';
+import ProdutoServico from './serviços/produtos';
+import PedidoServico from './serviços/pedidos'; // 
 import './App.css';
 
+const clienteServico = new ClienteServico();
+const produtoServico = new ProdutoServico();     
+const pedidoServico = new PedidoServico();       
+
 function App() {
+  const [clientes, setClientes] = useState([]);
+  const [produtos, setProdutos] = useState([]);
+  const [pedidos, setPedidos] = useState([]);     
+
+  useEffect(() => {
+    const carregarClientes = async () => {
+      try {
+        const dadosClientes = await clienteServico.buscarClientes();
+        setClientes(Array.isArray(dadosClientes) ? dadosClientes : []);
+      } catch (error) {
+        console.error('Erro ao carregar clientes:', error);
+      }
+    };
+
+    const carregarProdutos = async () => {
+      try {
+        const dadosProdutos = await produtoServico.buscarProdutos();
+        setProdutos(Array.isArray(dadosProdutos) ? dadosProdutos : []);
+      } catch (error) {
+        console.error('Erro ao carregar produtos:', error);
+      }
+    };
+
+    const carregarPedidos = async () => {
+      try {
+        const dadosPedidos = await pedidoServico.buscarPedidos();
+        setPedidos(Array.isArray(dadosPedidos) ? dadosPedidos : []);
+      } catch (error) {
+        console.error('Erro ao carregar pedidos:', error);
+      }
+    };
+
+    carregarClientes();
+    carregarProdutos();
+    carregarPedidos();  // ✅ NOVO
+  }, []);
+
   return (
     <Router>
-      <div className="App bg-light min-vh-100 d-flex flex-column justify-content-center align-items-center">
-        <header className="text-center">
-          <h1 className="display-4 mb-4 text-danger">🍕 Pizzaria Genuínos</h1>
-          <p className="lead mb-5">Bem-vindo! Escolha o que deseja fazer:</p>
+      <Navbar bg="danger" variant="dark" expand="lg" sticky="top">
+        <Container>
+          <Navbar.Brand as={Link} to="/" className="text-white">
+            <h3>Pizzaria Genuínos</h3>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Nav.Link as={Link} to="/realizar-pedido" className="text-white">
+                Fazer Pedido
+              </Nav.Link>
+              <Nav.Link as={Link} to="/Formulario-Produto" className="text-white">
+                Registrar Produto
+              </Nav.Link>
+              <Nav.Link as={Link} to="/Formulario-Cliente" className="text-white">
+                Registrar Cliente
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
-          <div className="d-flex flex-column gap-3">
-            <Link to="/realizar-pedido" className="btn btn-primary btn-lg">
-              Fazer Pedido
-            </Link>
-            <Link to="/Formulario-Produto" className="btn btn-success btn-lg">
-              Registrar Produtos
-            </Link>
-            <Link to="/Formulario-Cliente" className="btn btn-warning btn-lg text-white">
-              Registrar Cliente
-            </Link>
-          </div>
-        </header>
+      <Container className="mt-5">
+        <Routes>
+          <Route
+            path="/Formulario-Cliente"
+            element={<FormularioCliente clientes={clientes} />}
+          />
+          <Route
+            path="/Formulario-Produto"
+            element={<FormularioProduto produtos={produtos} />}
+          />
+          <Route
+            path="/realizar-pedido"
+            element={<FormularioPedido clientes={clientes} produtos={produtos} pedidos={pedidos} />} 
+          />
+          <Route path="*" element={<div>Página não encontrada!</div>} />
+        </Routes>
+      </Container>
 
-        <footer className="mt-5 text-muted">
-          <small>&copy; {new Date().getFullYear()} Pizzaria Genuínos. Todos os direitos reservados.</small>
-        </footer>
-      </div>
-
-      {/* Definindo as rotas */}
-      <Routes>
-        <Route path="/Formulario-Cliente" element={<FormularioCliente />} />
-        <Route path="/Formulario-Produto" element={<FormularioProduto />} />
-        <Route path="/realizar-pedido" element={<FormularioPedido />} /> 
-      </Routes>
+      <footer className="mt-5 text-center text-muted">
+        <small>&copy; {new Date().getFullYear()} Pizzaria Genuínos. Todos os direitos reservados.</small>
+      </footer>
     </Router>
   );
 }

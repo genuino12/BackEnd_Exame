@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
-function FormularioPedido({ onSubmit }) {
-  const [clientes, setClientes] = useState([]);
-  const [produtosDisponiveis, setProdutosDisponiveis] = useState([]);
-
+function FormularioPedido({ onSubmit, clientes = [], produtos = [] }) {
   const [pedido, setPedido] = useState({
     cliente_id: '',
     produtos: [],
@@ -56,11 +53,15 @@ function FormularioPedido({ onSubmit }) {
           onChange={handleChange}
         >
           <option value="">Selecione um cliente</option>
-          {clientes.map((cliente) => (
-            <option key={cliente.id} value={cliente.id}>
-              {cliente.nome}
-            </option>
-          ))}
+          {clientes.length > 0 ? (
+            clientes.map((cliente) => (
+              <option key={cliente.id} value={cliente.id}>
+                {cliente.nome}
+              </option>
+            ))
+          ) : (
+            <option disabled>Nenhum cliente disponível</option>
+          )}
         </select>
       </div>
 
@@ -72,11 +73,15 @@ function FormularioPedido({ onSubmit }) {
           value={pedido.produtos}
           onChange={handleProdutosChange}
         >
-          {produtosDisponiveis.map((produto) => (
-            <option key={produto.id} value={produto.id}>
-              {produto.nome}
-            </option>
-          ))}
+          {produtos.length > 0 ? (
+            produtos.map((produto) => (
+              <option key={produto.id} value={produto.id}>
+                {produto.nome}
+              </option>
+            ))
+          ) : (
+            <option disabled>Nenhum produto disponível</option>
+          )}
         </select>
       </div>
 
@@ -91,7 +96,11 @@ function FormularioPedido({ onSubmit }) {
       </div>
 
       <div className="mb-3">
-        <button type="submit" className="btn btn-primary me-2">
+        <button
+          type="submit"
+          className="btn btn-primary me-2"
+          disabled={!pedido.cliente_id || pedido.produtos.length === 0}
+        >
           Fazer Pedido
         </button>
         <button
