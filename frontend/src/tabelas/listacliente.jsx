@@ -43,7 +43,7 @@ function ListaClientes() {
 
     const handleEditar = (id) => {
         localStorage.setItem("clienteId", id);
-        navigate("/cadastrar-cliente");
+        navigate("/Formulario-Cliente");
     };
 
     const handleSearch = () => {
@@ -56,6 +56,17 @@ function ListaClientes() {
             setFilteredClientes(results);
         }
     };
+
+    const clearLocalStorage = () => {
+        localStorage.removeItem("clienteId");
+    };
+
+    
+    useEffect(() => {
+        return () => {
+            clearLocalStorage(); 
+        };
+    }, []);
 
     return (
         <>

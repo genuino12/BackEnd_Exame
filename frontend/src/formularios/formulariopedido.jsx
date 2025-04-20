@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function FormularioPedido({ onSubmit, clientes = [], produtos = [] }) {
   const [pedido, setPedido] = useState({
     cliente_id: '',
     produtos: [],
-    data_pedido: new Date().toISOString().slice(0, 16),
+    data_pedido: new Date().toISOString().slice(0, 16), 
   });
 
   const handleChange = (e) => {
@@ -23,21 +25,26 @@ function FormularioPedido({ onSubmit, clientes = [], produtos = [] }) {
     const dadosFinais = {
       cliente_id: Number(pedido.cliente_id),
       produtos: pedido.produtos,
-      data_pedido: pedido.data_pedido,
+      data_pedido: pedido.data_pedido, // Não mudando data_pedido
     };
 
     if (onSubmit) onSubmit(dadosFinais);
     console.log('Pedido enviado:', dadosFinais);
 
+    // Resetando os campos, mas mantendo o data_pedido
     setPedido({
       cliente_id: '',
       produtos: [],
-      data_pedido: new Date().toISOString().slice(0, 16),
+      data_pedido: new Date().toISOString().slice(0, 16), // Mantendo a data atual
     });
   };
 
-  const handleVisualizarPedido = () => {
-    console.log('Visualizando pedido:', pedido);
+  const handleReset = () => {
+    setPedido({
+      cliente_id: '',
+      produtos: [],
+      data_pedido: new Date().toISOString().slice(0, 16), // Mantendo a data atual
+    });
   };
 
   return (
@@ -96,20 +103,21 @@ function FormularioPedido({ onSubmit, clientes = [], produtos = [] }) {
       </div>
 
       <div className="mb-3">
-        <button
+        <Button
+          variant="primary"
           type="submit"
-          className="btn btn-primary me-2"
           disabled={!pedido.cliente_id || pedido.produtos.length === 0}
         >
           Fazer Pedido
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="danger"
           type="button"
-          className="btn btn-secondary"
-          onClick={handleVisualizarPedido}
+          onClick={handleReset}
+          className="ms-2"
         >
-          Visualizar Pedido
-        </button>
+          Cancelar
+        </Button>
       </div>
     </form>
   );

@@ -8,7 +8,7 @@ class ProdutoServico {
         filtro = "";
       }
 
-      const response = await fetch(`${API}/produtos/buscarProduto?nome=${filtro}`, {
+      const response = await fetch(`${API}/produtos/buscarProdutos?nome=${filtro}`, {
         headers: {
           "Content-Type": "application/json",
         },

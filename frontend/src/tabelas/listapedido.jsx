@@ -9,7 +9,7 @@ function ListaPedidos() {
     const [filteredPedidos, setFilteredPedidos] = useState([]);
     const navigate = useNavigate();
 
-  
+    // Buscar pedidos inicialmente
     useEffect(() => {
         const fetchPedidos = async () => {
             const servico = new PedidoServico();
@@ -17,7 +17,7 @@ function ListaPedidos() {
                 const response = await servico.buscarPedidos();
                 if (response && response.data) {
                     setPedidos(response.data);
-                    setFilteredPedidos(response.data);
+                    setFilteredPedidos(response.data);  // Exibir todos os pedidos inicialmente
                 } else {
                     console.error("Estrutura inesperada na resposta de pedidos:", response);
                 }
@@ -27,6 +27,18 @@ function ListaPedidos() {
         };
         fetchPedidos();
     }, []);
+
+    // Atualizar os pedidos filtrados sempre que searchById mudar
+    useEffect(() => {
+        if (searchById.trim() === "") {
+            setFilteredPedidos(pedidos);
+        } else {
+            const results = pedidos.filter((pedido) =>
+                pedido.id.toString().includes(searchById)
+            );
+            setFilteredPedidos(results);
+        }
+    }, [searchById, pedidos]);  // Reexecuta sempre que searchById ou pedidos mudar
 
     // Função para excluir um pedido
     const handleDelete = async (id) => {
@@ -46,19 +58,7 @@ function ListaPedidos() {
     // Função para editar um pedido
     const handleEditar = (id) => {
         localStorage.setItem("pedidoId", id);
-        navigate("/editar-pedido"); 
-    };
-
-    // Função para buscar pedidos por ID
-    const handleSearch = () => {
-        if (searchById.trim() === "") {
-            setFilteredPedidos(pedidos);
-        } else {
-            const results = pedidos.filter((pedido) =>
-                pedido.id.toString().includes(searchById)
-            );
-            setFilteredPedidos(results);
-        }
+        navigate("/realizar-pedido");
     };
 
     return (
@@ -71,9 +71,9 @@ function ListaPedidos() {
                         type="text"
                         placeholder="Pesquisar por ID do pedido"
                         value={searchById}
-                        onChange={(e) => setSearchById(e.target.value)}
+                        onChange={(e) => setSearchById(e.target.value)}  // Atualiza o estado de pesquisa
                     />
-                    <Button variant="primary" onClick={handleSearch}>
+                    <Button variant="primary" onClick={() => {}}>
                         Pesquisar
                     </Button>
                 </InputGroup>
@@ -95,8 +95,8 @@ function ListaPedidos() {
                             <tr key={pedido.id}>
                                 <td>{pedido.id}</td>
                                 <td>{pedido.cliente_id}</td>
-                                <td>{pedido.produtos.join(", ")}</td> 
-                                <td>{new Date(pedido.data_pedido).toLocaleDateString()}</td> 
+                                <td>{pedido.produtos}</td>
+                                <td>{new Date(pedido.data_pedido).toLocaleDateString()}</td>
                                 <td>
                                     <Button variant="primary" className="me-1" onClick={() => handleEditar(pedido.id)}>
                                         Editar

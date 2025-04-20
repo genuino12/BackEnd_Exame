@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 function FormularioProduto({ onSubmit }) {
   const [produto, setProduto] = useState({
-    id: '', // Campo id adicionado
     nome: '',
     preco: '',
   });
@@ -30,25 +29,26 @@ function FormularioProduto({ onSubmit }) {
     return Object.keys(novosErros).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validar()) {
-      if (onSubmit) onSubmit(produto);
-
-      console.log('Produto registrado:', produto);
-
-      setProduto({
-        id: '', // Limpar o id após o envio
-        nome: '',
-        preco: '',
-      });
-      setErros({});
+      try {
+        // Supondo que você tenha uma função para enviar ao backend
+        const produtoCriado = await onSubmit(produto);
+        console.log('Produto registrado:', produtoCriado);
+        setProduto({
+          nome: '',
+          preco: '',
+        });
+        setErros({});
+      } catch (error) {
+        console.error('Erro ao cadastrar o produto:', error);
+      }
     }
   };
 
   const handleReset = () => {
     setProduto({
-      id: '',
       nome: '',
       preco: '',
     });
@@ -58,18 +58,6 @@ function FormularioProduto({ onSubmit }) {
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
       <h2 className="mb-4">Cadastrar Produto</h2>
-
-      <div className="mb-3">
-        <label className="form-label">ID do Produto (automático):</label>
-        <input
-          type="text"
-          className="form-control"
-          name="id"
-          value={produto.id}
-          disabled
-          placeholder="ID será gerado automaticamente"
-        />
-      </div>
 
       <div className="mb-3">
         <label className="form-label">Nome do Produto:</label>

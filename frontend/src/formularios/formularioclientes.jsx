@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const CadastrarCliente = ({ adicionarCliente }) => {
+const FormularioCliente = ({ adicionarCliente }) => {
   const [formData, setFormData] = useState({
     Nome: '',
     Telefone: '',
     Endereco: '',
-    CPF: '', 
+    CPF: '',
   });
 
   const [erros, setErros] = useState({});
@@ -43,7 +43,7 @@ const CadastrarCliente = ({ adicionarCliente }) => {
           endereco: formData.Endereco,
           cpf: formData.CPF, 
         };
-        await adicionarCliente(novoCliente);
+        await adicionarCliente(novoCliente); // Chama a função para adicionar cliente
         setFormData({
           Nome: '',
           Telefone: '',
@@ -52,7 +52,7 @@ const CadastrarCliente = ({ adicionarCliente }) => {
         });
         setErros({});
         setSucesso(true);
-        setTimeout(() => setSucesso(false), 3000);
+        setTimeout(() => setSucesso(false), 3000); // Sucesso por 3 segundos
       } catch (error) {
         console.error('Erro ao cadastrar cliente:', error);
       }
@@ -68,6 +68,11 @@ const CadastrarCliente = ({ adicionarCliente }) => {
       CPF: '',
     });
     setErros({});
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
@@ -86,9 +91,11 @@ const CadastrarCliente = ({ adicionarCliente }) => {
             type="text"
             placeholder="Digite o nome do cliente"
             value={formData.Nome}
-            onChange={(e) => setFormData({ ...formData, Nome: e.target.value })}
-            required
+            onChange={handleChange}
+            name="Nome"
+            isInvalid={!!erros.Nome}
           />
+          <Form.Control.Feedback type="invalid">{erros.Nome}</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="formTelefone">
@@ -97,9 +104,11 @@ const CadastrarCliente = ({ adicionarCliente }) => {
             type="text"
             placeholder="Digite o telefone do cliente"
             value={formData.Telefone}
-            onChange={(e) => setFormData({ ...formData, Telefone: e.target.value })}
-            required
+            onChange={handleChange}
+            name="Telefone"
+            isInvalid={!!erros.Telefone}
           />
+          <Form.Control.Feedback type="invalid">{erros.Telefone}</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="formEndereco">
@@ -108,9 +117,11 @@ const CadastrarCliente = ({ adicionarCliente }) => {
             type="text"
             placeholder="Digite o endereço do cliente"
             value={formData.Endereco}
-            onChange={(e) => setFormData({ ...formData, Endereco: e.target.value })}
-            required
+            onChange={handleChange}
+            name="Endereco"
+            isInvalid={!!erros.Endereco}
           />
+          <Form.Control.Feedback type="invalid">{erros.Endereco}</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="formCPF">
@@ -119,9 +130,11 @@ const CadastrarCliente = ({ adicionarCliente }) => {
             type="text"
             placeholder="Digite o CPF do cliente"
             value={formData.CPF}
-            onChange={(e) => setFormData({ ...formData, CPF: e.target.value })}
-            required
+            onChange={handleChange}
+            name="CPF"
+            isInvalid={!!erros.CPF}
           />
+          <Form.Control.Feedback type="invalid">{erros.CPF}</Form.Control.Feedback>
         </Form.Group>
 
         <br />
@@ -136,4 +149,4 @@ const CadastrarCliente = ({ adicionarCliente }) => {
   );
 };
 
-export default CadastrarCliente;
+export default FormularioCliente;

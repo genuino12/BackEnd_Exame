@@ -45,7 +45,7 @@ class ClienteServico {
     }
   }
 
-  async inserirCliente(novoCliente) {
+  async adicionarCliente(novoCliente) {
     try {
       const response = await fetch(`${API}/clientes`, {
         method: "POST",

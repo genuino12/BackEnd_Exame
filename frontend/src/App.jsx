@@ -1,4 +1,3 @@
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Container, Navbar, Nav } from 'react-bootstrap';
@@ -57,6 +56,17 @@ function App() {
     carregarPedidos();
   }, []);
 
+  // Função para adicionar cliente
+  const adicionarCliente = async (novoCliente) => {
+    try {
+      await clienteServico.adicionarCliente(novoCliente);
+      setClientes((prevClientes) => [...prevClientes, novoCliente]);
+    } catch (error) {
+      console.error('Erro ao adicionar cliente:', error);
+      throw error;
+    }
+  };
+
   return (
     <Router>
       <Navbar bg="danger" variant="dark" expand="lg" sticky="top">
@@ -91,7 +101,12 @@ function App() {
         <Routes>
           <Route
             path="/Formulario-Cliente"
-            element={<FormularioCliente clientes={clientes} />}
+            element={
+              <FormularioCliente
+                clientes={clientes}
+                adicionarCliente={adicionarCliente}
+              />
+            }
           />
           <Route
             path="/Formulario-Produto"
@@ -99,7 +114,13 @@ function App() {
           />
           <Route
             path="/realizar-pedido"
-            element={<FormularioPedido clientes={clientes} produtos={produtos} pedidos={pedidos} />}
+            element={
+              <FormularioPedido
+                clientes={clientes}
+                produtos={produtos}
+                pedidos={pedidos}
+              />
+            }
           />
           <Route
             path="/Lista-Clientes"
@@ -107,7 +128,7 @@ function App() {
           />
           <Route
             path="/visualizar-pedidos"
-            element={<ListaPedidos />} // Rota atualizada para visualizar pedidos
+            element={<ListaPedidos pedidos={pedidos} />}
           />
           <Route path="*" element={<div>Página não encontrada!</div>} />
         </Routes>
